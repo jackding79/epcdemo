@@ -11,7 +11,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Method;
 import java.net.Socket;
-
+@Deprecated
 public class TaskProcess implements Runnable {
     private static final Logger logger= LoggerFactory.getLogger(TaskProcess.class);
     private Socket socket;
