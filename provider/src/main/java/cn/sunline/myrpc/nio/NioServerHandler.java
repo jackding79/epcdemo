@@ -14,25 +14,22 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 @ChannelHandler.Sharable
-public class NioServerHandler extends ChannelInboundHandlerAdapter implements ApplicationContextAware {
+public class NioServerHandler extends ChannelInboundHandlerAdapter  {
     private ThreadPoolExecutor handlePool;
-    private ApplicationContext applicationContext;
-    private HandleThreadPoolConfig poolConfig;
+    private HandleThreadPoolConfig poolConfig=new HandleThreadPoolConfig();
+    private Executor executor;
 
     public  NioServerHandler(){
-        poolConfig=applicationContext.getBean(HandleThreadPoolConfig.class);
         this.handlePool=new ThreadPoolExecutor(poolConfig.getCoreSize(),poolConfig.getMaxSize(),
                                             0L, TimeUnit.MILLISECONDS,new LinkedBlockingQueue<Runnable>(poolConfig.getQueueSize()),
                 new CustomThreadFactory("dh"),new ThreadPoolExecutor.AbortPolicy());
+        this.executor=new Executor();
     }
 
     final Logger logger= LoggerFactory.getLogger(NioServerHandler.class);
@@ -43,7 +40,7 @@ public class NioServerHandler extends ChannelInboundHandlerAdapter implements Ap
         handlePool.submit(new Runnable() {
             @Override
             public void run() {
-                ResponseData responseData=new Executor(in.toString(CharsetUtil.UTF_8)).execute();
+                ResponseData responseData=executor.execute(in.toString(CharsetUtil.UTF_8));
                 ctx.writeAndFlush(responseData);
             }
         });
@@ -60,8 +57,5 @@ public class NioServerHandler extends ChannelInboundHandlerAdapter implements Ap
         ctx.close();
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext=applicationContext;
-    }
+
 }

@@ -12,11 +12,10 @@ import java.lang.reflect.Method;
 public class Executor  {
     private static final Logger logger= LoggerFactory.getLogger(Executor.class);
 
-    private String msg;
-    public Executor(String in){
-        this.msg=in;
+    public Executor(){
     }
-    public ResponseData execute() {
+    public ResponseData execute(String msg) {
+        logger.info("开始执行-》{}",msg);
         ResponseData responseData=new ResponseData();
         RequestData requestData=(RequestData)JSONObject.parse(msg);
         Object result=null;
@@ -40,7 +39,7 @@ public class Executor  {
     private Object invoke(RequestData data){
         Cache cache=Cache.getCache();
         Object result=null;
-        logger.info("开始处理数据 :{}",data);
+        logger.info("开始处理数据 :{}->{}",data.getServiceName(),data.getMethodName());
         Object[] params=data.getArgs();
         Class parameterTypes[]=new Class[params.length];
         for (int i=0;i<params.length;i++){

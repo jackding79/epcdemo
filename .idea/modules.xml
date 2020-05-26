@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../../projectalice/myrpc/consumer/consumer.iml" filepath="$PROJECT_DIR$/../../projectalice/myrpc/consumer/consumer.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/myrpc.iml" filepath="$PROJECT_DIR$/.idea/myrpc.iml" />
       <module fileurl="file://$PROJECT_DIR$/provider/provider.iml" filepath="$PROJECT_DIR$/provider/provider.iml" />
     </modules>

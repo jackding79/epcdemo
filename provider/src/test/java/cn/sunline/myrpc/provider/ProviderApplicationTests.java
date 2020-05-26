@@ -1,7 +1,5 @@
 package cn.sunline.myrpc.provider;
 
-import cn.sunline.myrpc.entity.User;
-import cn.sunline.myrpc.provider.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.BeanNameAware;

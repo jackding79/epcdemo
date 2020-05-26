@@ -1,9 +1,9 @@
 package cn.sunline.myrpc.config;
 
 public class HandleThreadPoolConfig {
-    private int coreSize;
-    private int maxSize;
-    private int queueSize;
+    private int coreSize=Runtime.getRuntime().availableProcessors();
+    private int maxSize=200;
+    private int queueSize=1000;
 
 
     public int getCoreSize() {
