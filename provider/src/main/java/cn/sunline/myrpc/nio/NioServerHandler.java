@@ -38,12 +38,14 @@ public class NioServerHandler extends ChannelInboundHandlerAdapter  {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         RequestData in=(RequestData) msg;
         logger.info("server received: "+in.toString());
+        System.out.println(ctx.channel().isActive());
         handlePool.submit(new Runnable() {
             @Override
             public void run() {
-                //ResponseData responseData=executor.execute(in);
+                ResponseData responseData=executor.execute(in);
                 try {
-                    ctx.writeAndFlush("dsdsdsd");
+
+                    ctx.writeAndFlush(responseData);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -52,8 +54,7 @@ public class NioServerHandler extends ChannelInboundHandlerAdapter  {
     }
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        ctx.writeAndFlush(Unpooled.EMPTY_BUFFER) // 冲刷所有待审消息到远程节点。关闭通道后，操作完成
-                .addListener(ChannelFutureListener.CLOSE);
+        System.out.println("管道读数据完毕");
     }
 
     @Override
@@ -64,4 +65,18 @@ public class NioServerHandler extends ChannelInboundHandlerAdapter  {
     }
 
 
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        // TODO Auto-generated method stub
+        super.channelActive(ctx);
+        System.out.println("管道变得可用");
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        super.channelInactive(ctx);
+        System.out.println("管道变得不可用");
+
+    }
 }

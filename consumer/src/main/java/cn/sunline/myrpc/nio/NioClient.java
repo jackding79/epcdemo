@@ -30,8 +30,8 @@ public class NioClient {
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new NioClientHandler());//.addLast("decoder",new Decoder()).
-                                    //addLast("encoder",new Encoder()).
+                            ch.pipeline().addLast("decoder",new Decoder()).
+                                    addLast("encoder",new Encoder()).addLast(new NioClientHandler(data));
 
                         }
                     });
@@ -47,7 +47,6 @@ public class NioClient {
         requestData.setMethodName("1111");
         requestData.setServiceName("dsds");
         new NioClient("127.0.0.1",9001).start(requestData);
-        System.in.read();
     }
 
 }
