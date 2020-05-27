@@ -1,6 +1,7 @@
 package cn.sunline.myrpc.nio;
 
 
+import cn.sunline.myrpc.common.RequestData;
 import cn.sunline.myrpc.common.ResponseData;
 import cn.sunline.myrpc.config.HandleThreadPoolConfig;
 import cn.sunline.myrpc.factory.CustomThreadFactory;
@@ -35,13 +36,17 @@ public class NioServerHandler extends ChannelInboundHandlerAdapter  {
     final Logger logger= LoggerFactory.getLogger(NioServerHandler.class);
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ByteBuf in=(ByteBuf)msg;
-        logger.info("server received: "+in.toString(CharsetUtil.UTF_8));
+        RequestData in=(RequestData) msg;
+        logger.info("server received: "+in.toString());
         handlePool.submit(new Runnable() {
             @Override
             public void run() {
-                ResponseData responseData=executor.execute(in.toString(CharsetUtil.UTF_8));
-                ctx.writeAndFlush(responseData);
+                //ResponseData responseData=executor.execute(in);
+                try {
+                    ctx.writeAndFlush("dsdsdsd");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -54,6 +59,7 @@ public class NioServerHandler extends ChannelInboundHandlerAdapter  {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         cause.printStackTrace();
+        System.out.println(cause.getMessage());
         ctx.close();
     }
 

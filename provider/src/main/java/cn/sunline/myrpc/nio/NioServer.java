@@ -1,5 +1,7 @@
 package cn.sunline.myrpc.nio;
 
+import cn.sunline.myrpc.serializa.Decoder;
+import cn.sunline.myrpc.serializa.Encoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -31,7 +33,9 @@ public class NioServer {
                     .childHandler(new ChannelInitializer<SocketChannel>(){
                         @Override
                         public void initChannel(SocketChannel socketChannel) throws Exception {
-                            socketChannel.pipeline().addLast(new NioServerHandler());
+                            socketChannel.pipeline().//addLast("decoder",new Decoder()).
+                                    //addLast("encoder",new Encoder()).
+                                    addLast(new NioServerHandler());
                         }
                     });
             ChannelFuture future=bootstrap.bind().sync();//绑定的服务器 sync等待服务器关闭

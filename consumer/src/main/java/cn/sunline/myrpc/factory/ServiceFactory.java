@@ -1,6 +1,6 @@
 package cn.sunline.myrpc.factory;
 
-import cn.sunline.myrpc.consumer.proxy.ServiceProxy;
+import cn.sunline.myrpc.proxy.ServiceProxy;
 import org.springframework.beans.factory.FactoryBean;
 
 import java.lang.reflect.Proxy;

@@ -1,7 +1,7 @@
 package cn.sunline.myrpc.beans;
 
 import cn.sunline.myrpc.annotation.RpcService;
-import cn.sunline.myrpc.consumer.factory.ServiceFactory;
+import cn.sunline.myrpc.factory.ServiceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;

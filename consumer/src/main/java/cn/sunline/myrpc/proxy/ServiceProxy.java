@@ -14,6 +14,7 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.net.Socket;
+import java.nio.charset.Charset;
 import java.util.List;
 
 
@@ -41,24 +42,20 @@ public class ServiceProxy<T> implements InvocationHandler {
                 logger.error("服务调用失败,未找到可用服务 {}",path);
             }
         }else{
-            List<String> ips = client.getChildren().forPath("/rpc"+"/"+path);
+        /*    List<String> ips = client.getChildren().forPath("/rpc"+"/"+path);
             //选用第一个地址  可以添加负载均衡策略
-            ip=ips.get(0);
+            ip=ips.get(0);*/
+          byte []datas=client.getData().forPath("/rpc"+"/"+path);
+          String ips[]=new String(datas, Charset.defaultCharset()).split(":");
+          ip=ips[0];
         }
-        String [] address=ip.split(":");
-        Socket socket=new Socket(address[0],Integer.parseInt(address[1]));
+
         RequestData requestData=new RequestData();
         requestData.setArgs(args);
         requestData.setMethodName(method.getName());
         requestData.setServiceName(path);
-        ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
-        outputStream.writeObject(requestData);
-        outputStream.flush();
-        ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
-        Object result = inputStream.readObject();
-        inputStream.close();
-        outputStream.close();
-        return result;
+
+        return null;
     }
 
 }

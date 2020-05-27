@@ -14,10 +14,10 @@ public class Executor  {
 
     public Executor(){
     }
-    public ResponseData execute(String msg) {
+    public ResponseData execute(RequestData msg) {
         logger.info("开始执行-》{}",msg);
         ResponseData responseData=new ResponseData();
-        RequestData requestData=(RequestData)JSONObject.parse(msg);
+        RequestData requestData=msg;
         Object result=null;
         try {
             result  = this.invoke(requestData);

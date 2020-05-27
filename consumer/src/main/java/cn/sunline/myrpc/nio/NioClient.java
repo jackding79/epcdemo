@@ -1,5 +1,8 @@
 package cn.sunline.myrpc.nio;
 
+import cn.sunline.myrpc.common.RequestData;
+import cn.sunline.myrpc.serializa.Decoder;
+import cn.sunline.myrpc.serializa.Encoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -13,12 +16,11 @@ import java.net.InetSocketAddress;
 public class NioClient {
     private final String host;
     private final int port;
-
     public NioClient(String host,int port){
         this.host=host;
         this.port=port;
     }
-    public void start() throws Exception{
+    public void start(RequestData data) throws Exception{
         EventLoopGroup group=new NioEventLoopGroup();
         try{
             Bootstrap bootstrap=new Bootstrap();
@@ -28,14 +30,24 @@ public class NioClient {
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new NioClientHandler());
+                            ch.pipeline().addLast(new NioClientHandler());//.addLast("decoder",new Decoder()).
+                                    //addLast("encoder",new Encoder()).
+
                         }
                     });
             ChannelFuture future=bootstrap.connect().sync();//链接到远程 等待连接完成
-            future.channel().closeFuture().sync();//阻塞到远程 等待连接完成
-
+            future.channel().closeFuture().sync();
         }finally {
             group.shutdownGracefully().sync();//关闭线程池和释放所有资源
         }
     }
+
+    public static void main(String[] args) throws Exception {
+        RequestData requestData=new RequestData();
+        requestData.setMethodName("1111");
+        requestData.setServiceName("dsds");
+        new NioClient("127.0.0.1",9001).start(requestData);
+        System.in.read();
+    }
+
 }
