@@ -47,8 +47,8 @@ public class Registry {
                 ) {
                 String path=rootPath+"/"
                         +entry.getKey();
-                client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(path,ip.getBytes());
-                logger.info("创建zookeeper数据节点 ({} => {})", path,ip);
+                client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(path+"/"+ip);
+                logger.info("创建zookeeper服务节点 {}", path+"/"+ip);
             }
         }catch (Exception e){
 

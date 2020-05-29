@@ -32,4 +32,14 @@ public class TestServiceImpl implements TestService {
         list.add(user1);list.add(user2);
         return list;
     }
+
+    @Override
+    public String sayHello() {
+        return "hello jack";
+    }
+
+    @Override
+    public int getCounts() {
+        return 222;
+    }
 }

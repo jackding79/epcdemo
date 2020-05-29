@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 public class NioClientHandler extends SimpleChannelInboundHandler<ResponseData> {
     private final RequestData data;
@@ -24,7 +25,7 @@ public class NioClientHandler extends SimpleChannelInboundHandler<ResponseData> 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ResponseData msg) throws Exception {
         responseData=msg;
-        cdl.await();
+        cdl.countDown();
     }
 
 

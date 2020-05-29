@@ -20,8 +20,9 @@ public class NioClient {
         this.host=host;
         this.port=port;
     }
-    public void start(RequestData data) throws Exception{
+    public void start(NioClientHandler handler) throws Exception{
         EventLoopGroup group=new NioEventLoopGroup();
+        NioClientHandler nioClientHandler=handler;
         try{
             Bootstrap bootstrap=new Bootstrap();
             bootstrap.group(group)
@@ -31,7 +32,7 @@ public class NioClient {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline().addLast("decoder",new Decoder()).
-                                    addLast("encoder",new Encoder()).addLast(new NioClientHandler(data));
+                                    addLast("encoder",new Encoder()).addLast(nioClientHandler);
 
                         }
                     });
@@ -46,7 +47,9 @@ public class NioClient {
         RequestData requestData=new RequestData();
         requestData.setMethodName("1111");
         requestData.setServiceName("dsds");
-        new NioClient("127.0.0.1",9001).start(requestData);
+        NioClientHandler nioClientHandler=new NioClientHandler(requestData);
+        new NioClient("127.0.0.1",9001).start(nioClientHandler);
+        System.out.println(nioClientHandler.responseData());
     }
 
 }

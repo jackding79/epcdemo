@@ -8,6 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class Executor  {
     private static final Logger logger= LoggerFactory.getLogger(Executor.class);
@@ -27,6 +30,7 @@ public class Executor  {
             responseData.setMessage(e.getMessage());
         }
         responseData.setObject(result);
+        responseData.setCls(result.getClass());
         return responseData;
 
 
@@ -41,9 +45,14 @@ public class Executor  {
         Object result=null;
         logger.info("开始处理数据 :{}->{}",data.getServiceName(),data.getMethodName());
         Object[] params=data.getArgs();
-        Class parameterTypes[]=new Class[params.length];
-        for (int i=0;i<params.length;i++){
-            parameterTypes[i]=params[i].getClass();
+        Class parameterTypes[];
+        if(params!=null) {
+            parameterTypes= new Class[params.length];
+            for (int i = 0; i < params.length; i++) {
+                parameterTypes[i] = params[i].getClass();
+            }
+        }else{
+            parameterTypes=null;
         }
 
         String serviceName=data.getServiceName();

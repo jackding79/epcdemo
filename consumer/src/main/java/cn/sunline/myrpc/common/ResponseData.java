@@ -9,6 +9,15 @@ public class ResponseData {
         this.status="OK";
         this.resCode="200";
     }
+    private Class cls;
+
+    public Class getCls() {
+        return cls;
+    }
+
+    public void setCls(Class cls) {
+        this.cls = cls;
+    }
 
     public String getStatus() {
         return status;

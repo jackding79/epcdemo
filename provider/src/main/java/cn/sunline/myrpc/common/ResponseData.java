@@ -5,6 +5,16 @@ public class ResponseData {
     private String resCode;
     private String message;
     private Object object;
+    private Class cls;
+
+    public Class getCls() {
+        return cls;
+    }
+
+    public void setCls(Class cls) {
+        this.cls = cls;
+    }
+
     public ResponseData(){
         this.status="OK";
         this.resCode="200";
